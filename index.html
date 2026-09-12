@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FallenMisery</title>
+    <style>
+    body { font-family: monospace; background-color: black; color: seagreen; text-align: center; padding-top: 2%; margin-bottom: 1%;}
+    .card { font-size: 2vh; margin: 0 auto; padding-left: 1vw ; text-align: left; border: 0.3vw solid limegreen; width: 17vw; height: 22vh; background-color: whitesmoke; color: palevioletred; margin-bottom: 2vh}
+    button { font-size: 3vh; background: black; color: limegreen; border: 0.3vw solid limegreen; width: 12vw; height: 6vh; margin: 0.4vw; cursor: pointer; }
+    button:hover { background: greenyellow; color: limegreen; transform: scale(1.1);}
+    </style>
+</head>
+<body>
+  <h1 style="text-align: center; font-size: 5vh;">FallenMisery</h1>
+
+  <div class="card">
+    <p><b>Player:</b> <span id="playerName">-</span></p>
+    <p><b>Health:</b> <span id="playerHp">-</span></p>
+    <p><b>Weapon:</b> <span id="playerWeapon">-</span></p>
+    <p><b>Position:</b> (<span id="posX">0</span>, <span id="posY">0</span>)</p>
+  </div>
+
+  <div>
+    <button onclick="sendAction('w')">▲ North</button><br>
+    <button onclick="sendAction('a')">◄ West</button>
+    <button onclick="sendAction('s')">▼ South</button>
+    <button onclick="sendAction('d')">► East</button><br>
+    <button onclick="sendAction('attack')">⚔ Attack</button>
+  </div>
+
+  <p id="log" style="color: yellow; margin-top: 5vh; font-size: 4vh;"></p>
+
+  <script>
+    const API_URL = "https://sandpaper-purposely-droplet.ngrok-free.dev";
+    const ngrokHeaders = {
+      "ngrok-skip-browser-warning": "true"
+    };
+
+    async function updateStatus() {
+      try {
+        const res = await fetch(`${API_URL}/status`, { headers: ngrokHeaders });
+        const data = await res.json();
+        document.getElementById("playerName").textContent = data.name;
+        document.getElementById("playerHp").textContent = data.health;
+        document.getElementById("playerWeapon").textContent = data.weapon;
+        document.getElementById("posX").textContent = data.x;
+        document.getElementById("posY").textContent = data.y;
+      } catch (err) {
+        document.getElementById("log").textContent = "Error attempting to connect to the Java server.";
+      }
+    }
+
+    async function sendAction(cmd) {
+      try {
+        const res = await fetch(`${API_URL}/action?cmd=${cmd}`, { headers: ngrokHeaders });
+        const data = await res.json();
+        document.getElementById("log").textContent = data.message;
+        updateStatus();
+      } catch (err) {
+        document.getElementById("log").textContent = "Error sending action.";
+      }
+    }
+    updateStatus();
+  </script>
+</body>
+</html>
