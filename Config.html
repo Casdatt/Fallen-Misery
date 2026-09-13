@@ -27,15 +27,13 @@
                 return;
             }
             try {
-                const answer = await fetch (`https://tu-url.ngrok-free.dev/action?cmd=setName&name=${encodeURIComponent(newName)}`, {
+                const answer = await fetch (`https://sandpaper-purposely-droplet.ngrok-free.dev/action?cmd=setName&name=${encodeURIComponent(newName)}`, {
                     headers: {
                         "ngrok-skip-browser-warning": "69420"
                     }
                 });
-                const datos = await answer.json();
-
-                // 3. Confirmar en pantalla o en consola
-                alert("¡Nombre actualizado a: " + datos.name + "!");
+                const data = await answer.json();
+                alert("¡Nombre actualizado a: " + data.name + "!");
     
             } catch (error) {
                 console.error("Hubo un error de conexión:", error);
