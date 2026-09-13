@@ -22,7 +22,7 @@
     <p><b>Health:</b> <span id="playerHp">-</span></p>
     <p><b>Damage:</b> <span id="playerDmg">-</span></p>
     <p><b>Weapon:</b> <span id="playerWeapon">-</span></p>
-    <p><b>Round:</b> <span id="posX">0</span>.<span id="posY">0</span></p>
+    <p><b>Round:</b> <span id="round">0</span>.<span id="turn">0</span></p>
   </div>
 
   <div>
@@ -40,16 +40,22 @@
       "ngrok-skip-browser-warning": "true"
     };
 
+    let sessionId = localStorage.getItem("game_session_id");
+    if (!sessionId) {
+      sessionId = "player_" + Math.random().toString(36).substring(2, 9);
+      localStorage.setItem("game_session_id", sessionId);
+    }
+
     async function updateStatus() {
       try {
-        const res = await fetch(`${API_URL}/status`, { headers: ngrokHeaders });
+        const res = await fetch(`${API_URL}/status?sessionId=${sessionId}`, { headers: ngrokHeaders });
         const data = await res.json();
         document.getElementById("playerName").textContent = data.name;
         document.getElementById("playerHp").textContent = data.health;
         document.getElementById("playerDmg").textContent = data.damage;
         document.getElementById("playerWeapon").textContent = data.weapon;
-        document.getElementById("posX").textContent = data.x;
-        document.getElementById("posY").textContent = data.y;
+        document.getElementById("round").textContent = data.round;
+        document.getElementById("turn").textContent = data.turn;
       } catch (err) {
         document.getElementById("log").textContent = "Error attempting to connect to the Java server.";
       }
@@ -57,7 +63,7 @@
 
     async function sendAction(cmd) {
       try {
-        const res = await fetch(`${API_URL}/action?cmd=${cmd}`, { headers: ngrokHeaders });
+        const res = await fetch(`${API_URL}/action?sessionId=${sessionId}`, { headers: ngrokHeaders });
         const data = await res.json();
         document.getElementById("log").textContent = data.message;
         updateStatus();
