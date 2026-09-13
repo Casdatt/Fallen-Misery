@@ -27,13 +27,13 @@
                 return;
             }
             try {
-                const answer = await fetch (`https://sandpaper-purposely-droplet.ngrok-free.dev/action?cmd=setName&name=${encodeURIComponent(newName)}`, {
+                const answer = await fetch (`https://sandpaper-purposely-droplet.ngrok-free.dev/action?cmd=setName&name=${encodeURIComponent(newName)}&sessionId=${sessionId}`, {
                     headers: {
                         "ngrok-skip-browser-warning": "69420"
                     }
                 });
                 const data = await answer.json();
-                alert("¡Hi " + data.message + ", nice to meet you!");
+                alert("Hi " + data.message + ", nice to meet you!");
     
             } catch (error) {
                 console.error("Conexion error:", error);
