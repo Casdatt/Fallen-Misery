@@ -33,11 +33,11 @@
                     }
                 });
                 const data = await answer.json();
-                alert("¡Nombre actualizado a: " + data.name + "!");
+                alert("¡Hi " + data.name + ", nice to meet you!");
     
             } catch (error) {
-                console.error("Hubo un error de conexión:", error);
-                alert("No se pudo conectar con el servidor.");
+                console.error("Conexion error:", error);
+                alert("Unable to connect to server.");
             }
         }
     </script>
