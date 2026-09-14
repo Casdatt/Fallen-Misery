@@ -61,7 +61,7 @@
     const ngrokHeaders = {
       "ngrok-skip-browser-warning": "true"
     };
-    
+
     let sessionId = localStorage.getItem("game_session_id");
     if (!sessionId) {
       sessionId = "player_" + Math.random().toString(36).substring(2, 9);
@@ -79,11 +79,24 @@
         document.getElementById("playerWeapon").textContent = data.weapon;
         document.getElementById("round").textContent = data.round;
         document.getElementById("turn").textContent = data.turn;
-        document.getElementById("petName").textContent = data.petName;
-        document.getElementById("petHp").textContent = data.petHealth;
-        document.getElementById("petCurrentHp").textContent = data.petCurrentHealth
-        document.getElementById("petDmg").textContent = data.petDamage;
-        document.getElementById("petWeapon").textContent = data.petWeapon;
+
+        const petMenu = document.querySelector(".petmenu");
+        const actionMenu = document.querySelector(".actionmenu");
+
+        if (data.petName && data.petName.trim() !== "") {
+            petMenu.style.display = "block";
+            actionMenu.style.width = "70vw";
+
+            document.getElementById("petName").textContent = data.petName;
+            document.getElementById("petHp").textContent = data.petHealth;
+            document.getElementById("petCurrentHp").textContent = data.petCurrentHealth
+            document.getElementById("petDmg").textContent = data.petDamage;
+            document.getElementById("petWeapon").textContent = data.petWeapon;
+        } 
+        else {
+            petMenu.style.display = "none";
+            actionMenu.style.width = "100vw";
+            }
       } catch (err) {
         document.getElementById("log").textContent = "Error attempting to connect to the Java server.";
       }
