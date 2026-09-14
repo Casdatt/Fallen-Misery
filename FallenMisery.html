@@ -57,6 +57,11 @@
 </div>
 
 <script>
+    const API_URL = "https://sandpaper-purposely-droplet.ngrok-free.dev";
+    const ngrokHeaders = {
+      "ngrok-skip-browser-warning": "true"
+    };
+    
     let sessionId = localStorage.getItem("game_session_id");
     if (!sessionId) {
       sessionId = "player_" + Math.random().toString(36).substring(2, 9);
