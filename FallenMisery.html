@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FallenMisery</title>
+
+    <style>
+        body { font-family: monospace; background-color: dimgrey; }
+
+        .stats { background-color: indianred; padding-left: 0.2vw; border: 0.2vw solid burlywood; width: 10vw; height: 25vh; font-size: 2vh; overflow-wrap: break-word; word-break: break-all; }
+
+        .petstats { color: white; text-align: center; font-size: 1.4vw }
+
+        .actionmenu {  background-color: black; position: absolute; left: 0vw; bottom: 0vh; height: 40vh; width: 70vw; border-right: 0.2vw solid white; border-top: 0.3vh solid white; }
+
+        .petmenu { background-color: black; position: absolute; left: 70.2vw; bottom: 0vh; height: 40vh; width: 29.8vw; border-top: 0.3vh solid white; }
+
+        .actions { margin-left: 3vw; margin-right: 3vw; height: 8vh; margin-top: 11vh ; display: grid; grid-template-columns: repeat(3, 1fr); gap: 10vw; }
+
+        .actionspets { margin-left: 3vw; margin-right: 3vw; height: 8vh; margin-top: 11vh ; display: grid; grid-template-columns: repeat(2, 1fr); gap: 4vw; }
+
+
+        button { }
+    </style>
+
+</head>
+<body>
+<div class="stats">
+    <p><b><span id="playerName">-</span></b></p>
+    <p><b>Health:</b> <span id="playerHp">-</span><span>/</span><span id="playerCurrentHp">-</span></p>
+    <p><b>Damage:</b> <span id="playerDmg">-</span></p>
+    <p><b>Weapon:</b> <span id="playerWeapon">-</span></p>
+    <p><b>Round:</b> <span id="round">0</span>.<span id="turn">0</span></p>
+</div>
+<div class ="actionmenu">
+    <p id="log" style="color: yellow; margin-top: 5vh; text-align: center; font-size: 4vh;">You have succesfully defeated this round!</p>
+    <div class ="actions">
+        <button>Attack</button>
+        <button>Power</button>
+        <button>Escape</button>
+    </div>
+</div>
+<div class ="petmenu">
+
+    <div class ="petstats">
+        <p><b><span id="petName">-</span></b></p>
+        <b>Health:</b> <span id="petHp">-</span><span>/</span><span id="petCurrentHp">-</span>
+        <b>Damage:</b> <span id="petDmg">-</span>
+        <b>Weapon:</b> <span id="petWeapon">-</span>
+    </div>
+
+    <div class="actionspets">
+        <button>Attack</button>
+        <button>Power</button>
+    </div>
+</div>
+
+<script>
+    let sessionId = localStorage.getItem("game_session_id");
+    if (!sessionId) {
+      sessionId = "player_" + Math.random().toString(36).substring(2, 9);
+      localStorage.setItem("game_session_id", sessionId);
+    }
+
+    async function updateStatus() {
+      try {
+        const res = await fetch(`${API_URL}/status?sessionId=${sessionId}`, { headers: ngrokHeaders });
+        const data = await res.json();
+        document.getElementById("playerName").textContent = data.name;
+        document.getElementById("playerHp").textContent = data.health;
+        document.getElementById("playerCurrentHp").textContent = data.currentHealth
+        document.getElementById("playerDmg").textContent = data.damage;
+        document.getElementById("playerWeapon").textContent = data.weapon;
+        document.getElementById("round").textContent = data.round;
+        document.getElementById("turn").textContent = data.turn;
+        document.getElementById("petName").textContent = data.petName;
+        document.getElementById("petHp").textContent = data.petHealth;
+        document.getElementById("petCurrentHp").textContent = data.petCurrentHealth
+        document.getElementById("petDmg").textContent = data.petDamage;
+        document.getElementById("petWeapon").textContent = data.petWeapon;
+      } catch (err) {
+        document.getElementById("log").textContent = "Error attempting to connect to the Java server.";
+      }
+    }
+</script>
+
+</body>
