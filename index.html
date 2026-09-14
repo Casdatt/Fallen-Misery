@@ -6,7 +6,7 @@
     <title>FallenMisery</title>
     <style>
     body { font-family: monospace; background-color: black; color: seagreen; text-align: center;}
-    .card { font-size: 3vh; margin: 0 auto; padding-left: 1vw ; text-align: left; border: 0.3vw solid limegreen; width: 17vw; height: 34vh; background-color: whitesmoke; color: palevioletred; margin-bottom: 5vh}
+    .card { font-size: 3vh; margin: 0 auto; padding-left: 1vw ; text-align: left; border: 0.3vw solid limegreen; width: 17vw; height: 37vh; background-color: whitesmoke; color: palevioletred; margin-bottom: 5vh; break-word; word-break: break-all;}
     button { font-size: 3vh; background: black; color: limegreen; border: 0.3vw solid limegreen; width: 17vw; height: 7vh; margin-bottom: 2vh; cursor: pointer; }
     .del:hover { background:indianred; }
     .conf:hover { background:orangered; }
@@ -18,7 +18,7 @@
   <h1 style="text-align: center; font-size: 2.5vw;">Fallen Misery</h1>
 
   <div class="card">
-    <p><b>Player:</b> <span id="playerName">-</span></p>
+    <p><b><span id="playerName">-</span></b></p>
     <p><b>Health:</b> <span id="playerHp">-</span></p>
     <p><b>Damage:</b> <span id="playerDmg">-</span></p>
     <p><b>Weapon:</b> <span id="playerWeapon">-</span></p>
@@ -28,11 +28,11 @@
   <div>
     <a href="FallenMisery.html"><button>🎀 Continue</button></a><br>
     <a href="Uprades.html"><button class="upd">✨ Uprades</button></a><br>
-    <a href="Config.html"><button class="conf">⚙️ Config.</button></a><br><br><br>
+    <a href="Config.html"><button class="conf">⚙️ Config.</button></a><br><br>
     <button onclick="sendAction('delete')" class="del">🦴 Delete Run</button>
   </div>
 
-  <p id="log" style="color: yellow; margin-top: 5vh; font-size: 4vh;"></p>
+  <p id="log" style="color: yellow; margin-top: 0.1vh; font-size: 3.5vh;"></p>
 
   <script>
     const API_URL = "https://sandpaper-purposely-droplet.ngrok-free.dev";
