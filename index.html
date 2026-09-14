@@ -52,6 +52,7 @@
         const data = await res.json();
         document.getElementById("playerName").textContent = data.name;
         document.getElementById("playerHp").textContent = data.health;
+          document.getElementById("playerCurrentHp").textContent = data.currentHealth;
         document.getElementById("playerDmg").textContent = data.damage;
         document.getElementById("playerWeapon").textContent = data.weapon;
         document.getElementById("round").textContent = data.round;
