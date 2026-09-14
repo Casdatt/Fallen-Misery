@@ -39,7 +39,7 @@
                     }
                 });
                 const data = await answer.json();
-                alert("Hi " + data.message + ", nice to meet you!");
+                alert(data.message);
     
             } catch (error) {
                 console.error("Conexion error:", error);
