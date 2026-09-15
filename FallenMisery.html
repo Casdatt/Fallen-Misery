@@ -16,9 +16,19 @@
 
         .petmenu { background-color: black; position: absolute; left: 69.8vw; bottom: 0vh; height: 40vh; width: 30vw; border-left: 0.2vw solid white; border-top: 0.3vh solid white; }
 
-        .actions { margin-left: 10vw; margin-right: 10vw; height: 8vh; margin-top: 11vh ; display: grid; grid-template-columns: repeat(2, 1fr); gap: 20vw; }
+        .actions { margin-left: 10vw; margin-right: 10vw; height: 8vh; margin-top: 7vh ; margin-bottom: 2vh; display: grid; grid-template-columns: repeat(2, 1fr); gap: 20vw; }
 
         .actionspets { margin-left: 3vw; margin-right: 3vw; height: 8vh; margin-top: 11vh ; display: grid; grid-template-columns: repeat(2, 1fr); gap: 4vw; }
+
+        button { background-color: black; color: white; border: 0.4vw solid limegreen; }
+
+        .acpet { border: 0.4vw solid darkblue; }
+
+        .ac:hover { transform: scale(1.2); background-color: greenyellow; color: black;  }
+
+        .acpet:hover { transform: scale(1.2); background-color: royalblue; color: black;  }
+
+        .menu:hover { transform: scale(1.1); background-color: indianred; color: black }
     </style>
 
 </head>
@@ -33,10 +43,10 @@
 <div class ="actionmenu">
     <p id="log" style="color: yellow; margin-top: 5vh; text-align: center; font-size: 4vh;">...</p>
     <div class ="actions">
-        <button>Attack</button>
-        <button>Power</button>
+        <button class="ac"><b>Attack</b></button>
+        <button class="ac"><b>Power</b></button>
     </div>
-    <a href="index.html"><button style="width: 28vw; margin-top: 2vh; height: 8vh;">⬅️ Menu</button></a>
+    <a href="index.html"><button class="menu" style="width: 28vw; margin-top: 2vh; height: 8vh;"><b>⬅️ Menu</b></button></a>
 </div>
 <div class ="petmenu">
 
@@ -48,8 +58,8 @@
     </div>
 
     <div class="actionspets">
-        <button>Attack</button>
-        <button>Power</button>
+        <button class="acpet"><b>Attack</b></button>
+        <button class="acpet"><b>Power</b></button>
     </div>
 </div>
 
