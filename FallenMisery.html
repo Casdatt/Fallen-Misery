@@ -109,9 +109,42 @@
             }
       } catch (err) {
         document.getElementById("log").textContent = "Error attempting to connect to the Java server.";
+        return null;
       }
+      return data;
     }
-    updateStatus();
+
+    async function advanceRound() {
+        try {
+            const res = await fetch(`${API_URL}/action?cmd=advance&sessionId=${sessionId}`, { headers: ngrokHeaders });
+            const data = await res.json();
+            document.getElementById("log").textContent = data.message;
+            await updateStatus();
+        } catch (err) {
+            document.getElementById("log").textContent = "Error advancing wave.";
+        }
+    }
+
+    async function playerAttack() {
+
+        const statusData = await updateStatus();
+
+        if (statusData && statusData.enemiesLeft === 0) {
+            await advanceRound();
+        }
+    }
+
+
+    async function initGame() {
+        const data = await updateStatus();
+        if (data && data.enemiesLeft === 0) {
+            await advanceRound();
+        }
+    }
+
+    document.querySelector(".actions .ac").addEventListener("click", playerAttack);
+    initGame();
+
 </script>
 </body>
 </html>
