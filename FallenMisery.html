@@ -140,12 +140,12 @@
             actionMenu.style.width = "100vw";
             }
         renderEnemies(data.enemies);
+        return data;
       } 
       catch (err) {
         document.getElementById("log").textContent = "Error attempting to connect to the Java server.";
         return null;
       }
-      return data;
     }
 
     async function advanceRound() {
