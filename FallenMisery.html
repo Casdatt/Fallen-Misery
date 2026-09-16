@@ -8,15 +8,17 @@
     <style>
         body { font-family: monospace; background-color: dimgrey; text-align: center; }
 
-        .stats { background-color: indianred; padding-left: 0.2vw; border: 0.2vw solid burlywood; width: 10vw; height: 30vh; font-size: 2vh; overflow-wrap: break-word; word-break: break-all; text-align: left; }
+        .stats { background-color: indianred; padding-left: 0.2vw; border: 0.2vw solid burlywood; width: 10vw; height: 30vh; font-size: 2vh; overflow-wrap: break-word; word-break: break-all; text-align: left; position: absolute; }
 
         .petstats { color: white; text-align: center; font-size: 1.4vw }
 
-        .enemy-zone { display: flex; align-items: center; gap: 2vw; height: 20vh; margin-top: 5vh; }
+        .enemy-zone { display: flex; justify-content: center; align-items: center; gap: 2vw; height: 20vh; margin-top: 5vh; }
 
         .enemy-btn { background-color: green; color: black; border: 0.3vw solid orange; padding: 1.5vh 1.5vw; text-align: center; font-size: 1.8vh; min-width: 10vw; cursor: pointer; }
 
         .enemy-btn:hover { background-color: red; transform: scale(1.08) }
+
+        .enemy-btn.selected { background-color: yellowgreen; transform: scale(1.12) }
 
         .actionmenu {  background-color: black; position: absolute; left: 0vw; bottom: 0vh; height: 40vh; width: 70vw; border-top: 0.3vh solid white; }
 
@@ -28,11 +30,15 @@
 
         button { background-color: black; color: white; border: 0.4vw solid limegreen; }
 
-        .acpet { border: 0.4vw solid darkblue; }
+        .acpet { border: 0.4vw solid darkblue; font-size: 1vw; }
+
+        .ac { font-size: 1.4vw; }
 
         .ac:hover { transform: scale(1.2); background-color: greenyellow; color: black;  }
 
         .acpet:hover { transform: scale(1.2); background-color: royalblue; color: black;  }
+
+        .menu { font-size: 1vw }
 
         .menu:hover { transform: scale(1.1); background-color: indianred; color: black }
     </style>
@@ -51,7 +57,7 @@
 <div class ="actionmenu">
     <p id="log" style="color: yellow; margin-top: 5vh; text-align: center; font-size: 4vh;">...</p>
     <div class ="actions">
-        <button class="ac"><b>Attack</b></button>
+        <button onclick="playerAttack()" class="ac"><b>Attack</b></button>
         <button class="ac"><b>Power</b></button>
     </div>
     <a href="index.html"><button class="menu" style="width: 28vw; margin-top: 2vh; height: 8vh;"><b>⬅️ Menu</b></button></a>
@@ -91,6 +97,10 @@
         container.innerHTML = "";
 
         if (!enemies || enemies.length === 0) return;
+
+        if (!enemies[selectedEnemyIndex] || enemies[selectedEnemyIndex].currentHealth <= 0) {
+            selectedEnemyIndex = enemies.findIndex(e => e.currentHealth > 0);
+        }
 
         enemies.forEach((enemy, index) => {
             if (enemy.currentHealth <= 0) return;
@@ -146,6 +156,7 @@
         document.getElementById("log").textContent = "Error attempting to connect to the Java server.";
         return null;
       }
+      
     }
 
     async function advanceRound() {
@@ -160,14 +171,22 @@
     }
 
     async function playerAttack() {
+        try {
+            const res = await fetch(`${API_URL}/action?cmd=attack&target=${selectedEnemyIndex}&sessionId=${sessionId}`, { headers: ngrokHeaders });
+            const actionData = await res.json();
+        
+            document.getElementById("log").textContent = actionData.message;
 
-        const statusData = await updateStatus();
+            const statusData = await updateStatus();
 
-        if (statusData && statusData.enemiesLeft === 0) {
-            await advanceRound();
-        }
+            if (statusData && statusData.enemiesLeft === 0) {
+                await advanceRound();
+            }
+        } 
+        catch (err) {
+            document.getElementById("log").textContent = "Error executing attack.";
+        }       
     }
-
 
     async function initGame() {
         const data = await updateStatus();
