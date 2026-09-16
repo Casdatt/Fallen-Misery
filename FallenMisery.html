@@ -55,9 +55,9 @@
 </div>
 <div id="enemyZone" class="enemy-zone"></div>
 <div class ="actionmenu">
-    <p id="log" style="color: yellow; margin-top: 5vh; text-align: center; font-size: 4vh;">...</p>
+    <p id="log" style="color: yellow; margin-top: 5vh; text-align: center; font-size: 3vh;">...</p>
     <div class ="actions">
-        <button onclick="playerAttack()" class="ac"><b>Attack</b></button>
+        <button class="ac"><b>Attack</b></button>
         <button class="ac"><b>Power</b></button>
     </div>
     <a href="index.html"><button class="menu" style="width: 28vw; margin-top: 2vh; height: 8vh;"><b>⬅️ Menu</b></button></a>
@@ -159,7 +159,11 @@
       
     }
 
+    let isAdvancing = false;
+
     async function advanceRound() {
+        if (isAdvancing) return;
+        isAdvancing = true
         try {
             const res = await fetch(`${API_URL}/action?cmd=advance&sessionId=${sessionId}`, { headers: ngrokHeaders });
             const data = await res.json();
@@ -167,6 +171,9 @@
             await updateStatus();
         } catch (err) {
             document.getElementById("log").textContent = "Error advancing wave.";
+        }
+        finally {
+            isAdvancing = false
         }
     }
 
@@ -190,7 +197,7 @@
 
     async function initGame() {
         const data = await updateStatus();
-        if (data && data.enemiesLeft === 0) {
+        if (data && data.round === 0) {
             await advanceRound();
         }
     }
