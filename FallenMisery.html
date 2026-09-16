@@ -8,7 +8,7 @@
     <style>
         body { font-family: monospace; background-color: dimgrey; text-align: center; }
 
-        .stats { background-color: indianred; padding-left: 0.2vw; border: 0.2vw solid burlywood; width: 10vw; height: 25vh; font-size: 2vh; overflow-wrap: break-word; word-break: break-all; text-align: left; }
+        .stats { background-color: indianred; padding-left: 0.2vw; border: 0.2vw solid burlywood; width: 10vw; height: 30vh; font-size: 2vh; overflow-wrap: break-word; word-break: break-all; text-align: left; }
 
         .petstats { color: white; text-align: center; font-size: 1.4vw }
 
@@ -34,10 +34,11 @@
 </head>
 <body>
 <div class="stats">
-    <p><b><span id="playerName">-</span></b></p>
-    <p><b>Health:</b> <span id="playerCurrentHp">-</span><span>/</span><span id="playerHp">-</span></p>
-    <p><b>Damage:</b> <span id="playerDmg">-</span></p>
-    <p><b>Weapon:</b> <span id="playerWeapon">-</span></p>
+    <p><b><span id="playerName">Handsome</span></b></p>
+    <p><b>Level:</b> <span id="playerLevel">0</span></p>
+    <p><b>Health:</b> <span id="playerCurrentHp">11.9</span><span>/</span><span id="playerHp">12</span></p>
+    <p><b>Damage:</b> <span id="playerDmg">3.0</span></p>
+    <p><b>Weapon:</b> <span id="playerWeapon">FISTS</span></p>
     <p><b>Round:</b> <span id="round">0</span>.<span id="turn">0</span></p>
 </div>
 <div class ="actionmenu">
@@ -51,10 +52,10 @@
 <div class ="petmenu">
 
     <div class ="petstats">
-        <p><b><span id="petName">-</span></b></p>
-        <b>Health:</b> <span id="petCurrentHp">-</span><span>/</span><span id="pettHp">-</span>
-        <b>Damage:</b> <span id="petDmg">-</span>
-        <b>Weapon:</b> <span id="petWeapon">-</span>
+        <p><b><span id="petName">---------------</span></b></p>
+        <b>Level:</b> <span id="petLevel">0</span>
+        <b>Health:</b> <span id="petCurrentHp">4.9</span><span>/</span><span id="petHp">5</span>
+        <b>Damage:</b> <span id="petDmg">4.0</span>
     </div>
 
     <div class="actionspets">
@@ -82,6 +83,7 @@
         document.getElementById("playerName").textContent = data.name;
         document.getElementById("playerHp").textContent = data.health;
         document.getElementById("playerCurrentHp").textContent = data.currentHealth
+        document.getElementById("playerLevel").textContent = data.level;
         document.getElementById("playerDmg").textContent = data.damage;
         document.getElementById("playerWeapon").textContent = data.weapon;
         document.getElementById("round").textContent = data.round;
@@ -95,10 +97,11 @@
             actionMenu.style.width = "70vw";
 
             document.getElementById("petName").textContent = data.petName;
+            document.getElementById("petLevel").textContent = data.petLevel;
             document.getElementById("petHp").textContent = data.petHealth;
             document.getElementById("petCurrentHp").textContent = data.petCurrentHealth
             document.getElementById("petDmg").textContent = data.petDamage;
-            document.getElementById("petWeapon").textContent = data.petWeapon;
+
         } 
         else {
             petMenu.style.display = "none";
@@ -111,3 +114,4 @@
     updateStatus();
 </script>
 </body>
+</html>
