@@ -57,8 +57,8 @@
 <div class ="actionmenu">
     <p id="log" style="color: yellow; margin-top: 5vh; text-align: center; font-size: 3vh;">...</p>
     <div class ="actions">
-        <button class="ac"><b>Attack</b></button>
-        <button class="ac"><b>Power</b></button>
+        <button class="ac" class="attack"><b>Attack</b></button>
+        <button class="ac" class="power"><b>Power</b></button>
     </div>
     <a href="index.html"><button class="menu" style="width: 28vw; margin-top: 2vh; height: 8vh;"><b>⬅️ Menu</b></button></a>
 </div>
@@ -184,11 +184,15 @@
             document.getElementById("log").textContent = "Error advancing wave.";
         }
         finally {
-            isAdvancing = false
+            isAdvancing = false;
         }
     }
 
+    let turn = false;
+
     async function playerAttack() {
+        if (turn) return;
+        turn = true
         try {
             const res = await fetch(`${API_URL}/action?cmd=attack&target=${selectedEnemyIndex}&sessionId=${sessionId}`, { headers: ngrokHeaders });
             const actionData = await res.json();
@@ -203,7 +207,10 @@
         } 
         catch (err) {
             document.getElementById("log").textContent = "Error executing attack.";
-        }       
+        }
+        finally {
+            turn = false
+        }
     }
 
     async function initGame() {
@@ -213,7 +220,7 @@
         }
     }
 
-    document.querySelector(".actions .ac").addEventListener("click", playerAttack);
+    document.querySelector(".attack").addEventListener("click", playerAttack);
     initGame();
 
 </script>
