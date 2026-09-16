@@ -41,6 +41,7 @@
     <p><b>Weapon:</b> <span id="playerWeapon">FISTS</span></p>
     <p><b>Round:</b> <span id="round">0</span>.<span id="turn">0</span></p>
 </div>
+<div id="enemyZone" class="enemy-zone"></div>
 <div class ="actionmenu">
     <p id="log" style="color: yellow; margin-top: 5vh; text-align: center; font-size: 4vh;">...</p>
     <div class ="actions">
@@ -71,9 +72,34 @@
     };
 
     let sessionId = localStorage.getItem("game_session_id");
+
     if (!sessionId) {
       sessionId = "player_" + Math.random().toString(36).substring(2, 9);
       localStorage.setItem("game_session_id", sessionId);
+    }
+
+    let selectedEnemyIndex = 0;
+
+    function renderEnemies(enemies) {
+        const container = document.getElementById("enemyZone");
+        container.innerHTML = "";
+
+        if (!enemies || enemies.length === 0) return;
+
+        enemies.forEach((enemy, index) => {
+            if (enemy.currentHealth <= 0) return;
+
+            const btn = document.createElement("button");
+            btn.className = "enemy-btn" + (selectedEnemyIndex === index ? " selected" : "");
+            btn.innerHTML = `<b>${enemy.name} (Lv.${enemy.level})</b><br>HP: ${enemy.currentHealth.toFixed(1)} / ${enemy.health.toFixed(1)}`;
+        
+            btn.onclick = () => {
+                selectedEnemyIndex = index;
+                renderEnemies(enemies);
+            };
+
+            container.appendChild(btn);
+        });
     }
 
     async function updateStatus() {
@@ -107,7 +133,9 @@
             petMenu.style.display = "none";
             actionMenu.style.width = "100vw";
             }
-      } catch (err) {
+        renderEnemies(data.enemies);
+      } 
+      catch (err) {
         document.getElementById("log").textContent = "Error attempting to connect to the Java server.";
         return null;
       }
