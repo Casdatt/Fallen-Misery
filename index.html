@@ -30,7 +30,7 @@
     <a href="FallenMisery.html"><button>🎀 Continue</button></a><br>
     <a href="Uprades.html"><button class="upd">✨ Uprades</button></a><br>
     <a href="Config.html"><button class="conf">⚙️ Config.</button></a><br><br>
-    <button onclick="sendAction('delete')" class="del">🦴 Delete Run</button>
+    <button onclick="deleteRun()" class="del">🦴 Delete Run</button>
   </div>
 
   <p id="log" style="color: yellow; margin-top: 0.1vh; font-size: 3.5vh;"></p>
@@ -64,16 +64,18 @@
       }
     }
 
-    async function sendAction(cmd) {
-      try {
-        const res = await fetch(`${API_URL}/action?sessionId=${sessionId}`, { headers: ngrokHeaders });
+    async function deleteRun() {
+    const confirmDelete = confirm("Do u want to delete the current run? You wont loose your uprades but your round and xp progress");
+    if (!confirmDelete) return;
+
+    try {
+        const res = await fetch(`${API_URL}/action?cmd=progressReset&sessionId=${sessionId}`, { headers: ngrokHeaders });
         const data = await res.json();
-        document.getElementById("log").textContent = data.message;
-        updateStatus();
-      } catch (err) {
-        document.getElementById("log").textContent = "Error sending action.";
-      }
+        await updateStatus();
+    } catch (err) {
+        alert("Error trying to delete the current run.");
     }
+}
     updateStatus();
   </script>
 </body>
