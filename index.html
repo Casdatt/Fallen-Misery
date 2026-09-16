@@ -6,7 +6,7 @@
     <title>FallenMisery</title>
     <style>
     body { font-family: monospace; background-color: black; color: seagreen; text-align: center;}
-    .card { font-size: 3vh; margin: 0 auto; padding-left: 1vw ; text-align: left; border: 0.3vw solid limegreen; width: 17vw; height: 37vh; background-color: whitesmoke; color: palevioletred; margin-bottom: 5vh; break-word; word-break: break-all;}
+    .card { font-size: 3vh; margin: 0 auto; padding-left: 1vw ; text-align: left; border: 0.3vw solid limegreen; width: 17vw; height: 42vh; background-color: whitesmoke; color: palevioletred; margin-bottom: 5vh; break-word; word-break: break-all;}
     button { font-size: 3vh; background: black; color: limegreen; border: 0.3vw solid limegreen; width: 17vw; height: 7vh; margin-bottom: 2vh; cursor: pointer; }
     .del:hover { background:indianred; }
     .conf:hover { background:orangered; }
@@ -18,10 +18,11 @@
   <h1 style="text-align: center; font-size: 2.5vw;">Fallen Misery</h1>
 
   <div class="card">
-    <p><b><span id="playerName">-</span></b></p>
-    <p><b>Health:</b> <span id="playerCurrentHp">-</span><span>/</span><span id="playerHp">-</span></p>
-    <p><b>Damage:</b> <span id="playerDmg">-</span></p>
-    <p><b>Weapon:</b> <span id="playerWeapon">-</span></p>
+    <p><b><span id="playerName">Handsome</span></b></p>
+    <p><b>Level:</b> <span id="playerLevel">0</span></p>
+    <p><b>Health:</b> <span id="playerCurrentHp">11.9</span><span>/</span><span id="playerHp">12.0</span></p>
+    <p><b>Damage:</b> <span id="playerDmg">3.0</span></p>
+    <p><b>Weapon:</b> <span id="playerWeapon">FISTS</span></p>
     <p><b>Round:</b> <span id="round">0</span>.<span id="turn">0</span></p>
   </div>
 
@@ -52,8 +53,9 @@
         const data = await res.json();
         document.getElementById("playerName").textContent = data.name;
         document.getElementById("playerHp").textContent = data.health;
-          document.getElementById("playerCurrentHp").textContent = data.currentHealth;
+        document.getElementById("playerCurrentHp").textContent = data.currentHealth;
         document.getElementById("playerDmg").textContent = data.damage;
+        document.getElementById("playerLevel").textContent = data.level;
         document.getElementById("playerWeapon").textContent = data.weapon;
         document.getElementById("round").textContent = data.round;
         document.getElementById("turn").textContent = data.turn;
