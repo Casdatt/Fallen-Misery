@@ -125,7 +125,7 @@
         const sentences = fullMessage.split(/(?<=\!)\s+/).filter(s => s.trim() !== "");
         for (const sentence of sentences) {
             logEl.textContent = sentence;
-            await wait(900);
+            await wait(1200);
         }
     }
 
