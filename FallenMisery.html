@@ -8,7 +8,21 @@
     <style>
         body { font-family: monospace; background-color: dimgrey; text-align: center; }
 
-        .stats { background-color: indianred; padding-left: 0.2vw; border: 0.2vw solid burlywood; width: 10vw; height: 30vh; font-size: 2vh; overflow-wrap: break-word; word-break: break-all; text-align: left; position: absolute; }
+        .cards { background-color: black; width: 100%; height: 100%; position: absolute; opacity: 67%; z-index: 1; left: 0%; top: 0%; display: none; }
+
+        .cardsbox { margin-left: 10vw; margin-right: 10vw; display: grid; grid-template-columns: repeat(3, 1fr); gap: 10vw; z-index: 2; height: 60vh; width: 80vw; margin-top: 15vh; }
+
+        .card { display: flex; flex-direction: column; gap: 0vw; background-color: purple; }
+
+        .cardsttl { background-color: purple; font-size: 3vh; height: 10%; align-items: center; }
+
+        .cardsopt { background-color: darkgreen; font-size: 1.2vh; height: 90%; align-items: center; }
+
+        .card:hover { transform: scale(1.12); }
+
+        .cardsopt.selected { transform: scale(1.08); }
+
+        .stats { background-color: indianred; padding-left: 0.4vw; border: 0.2vw solid burlywood; width: 11vw; height: 30vh; font-size: 2vh; overflow-wrap: break-word; word-break: break-all; text-align: left; position: absolute; }
 
         .petstats { color: white; text-align: center; font-size: 1.4vw }
 
@@ -45,37 +59,61 @@
 
 </head>
 <body>
-<div class="stats">
-    <p><b><span id="playerName">Handsome</span></b></p>
-    <p><b>Level:</b> <span id="playerLevel">0</span></p>
-    <p><b>Health:</b> <span id="playerCurrentHp">11.9</span><span>/</span><span id="playerHp">12</span></p>
-    <p><b>Damage:</b> <span id="playerDmg">3.0</span></p>
-    <p><b>Weapon:</b> <span id="playerWeapon">FISTS</span></p>
-    <p><b>Round:</b> <span id="round">0</span>.<span id="turn">0</span></p>
-</div>
-<div id="enemyZone" class="enemy-zone"></div>
-<div class ="actionmenu">
-    <p id="log" style="color: yellow; margin-top: 5vh; text-align: center; font-size: 3vh;">...</p>
-    <div class ="actions">
-        <button id="attack" class="ac"><b>Attack</b></button>
-        <button id="power" class="ac"><b>Power</b></button>
-    </div>
-    <a href="index.html"><button class="menu" style="width: 28vw; margin-top: 2vh; height: 8vh;"><b>⬅️ Menu</b></button></a>
-</div>
-<div class ="petmenu">
+    <div id="cards" class="cards">
+        <div class="cardsbox">
+            
+            <div class="card">
+            <h1 class="cardsttl">Title 1</h1>
+            <button class="cardsopt">1</button>
+            </div>
 
-    <div class ="petstats">
-        <p><b><span id="petName">---------------</span></b></p>
-        <b>Level:</b> <span id="petLevel">0</span>
-        <b>Health:</b> <span id="petCurrentHp">4.9</span><span>/</span><span id="petHp">5</span>
-        <b>Damage:</b> <span id="petDmg">4.0</span>
+            <div class="card">
+            <h1 class="cardsttl">Title 2</h1>
+            <button class="cardsopt">2</button>
+            </div>
+
+            <div class="card">
+            <h1 class="cardsttl">Title 3</h1>
+            <button class="cardsopt">3</button>
+            </div>
+
+        </div>
+        
     </div>
 
-    <div class="actionspets">
-        <button class="acpet"><b>Attack</b></button>
-        <button class="acpet"><b>Power</b></button>
-    </div>
-</div>
+        <div class="stats">
+            <p><b><span id="playerName">Handsome</span></b></p>
+            <p><b>Level:</b> <span id="playerLevel">0</span></p>
+            <p><b>Health:</b> <span id="playerCurrentHp">11.9</span><span>/</span><span id="playerHp">12</span></p>
+            <p><b>Damage:</b> <span id="playerDmg">3.0</span></p>
+            <p><b>Weapon:</b> <span id="playerWeapon">FISTS</span></p>
+            <p><b>Round:</b> <span id="round">0</span>.<span id="turn">0</span></p>
+        </div>
+        <div id="enemyZone" class="enemy-zone"></div>
+        <div class ="actionmenu">
+            
+            <p id="log" style="color: yellow; margin-top: 5vh; text-align: center; font-size: 3vh;">...</p>
+            
+            <div class ="actions">
+                <button class="ac" id="attack"><b>Attack</b></button>
+                <button class="ac" id="power"><b>Power</b></button>
+            </div>
+            <a href="index.html"><button class="menu" style="width: 28vw; margin-top: 2vh; height: 8vh;"><b>⬅️ Menu</b></button></a>
+        </div>
+        <div class ="petmenu">
+
+        <div class ="petstats">
+                <p><b><span id="petName">---------------</span></b></p>
+                <b>Level:</b> <span id="petLevel">0</span>
+                <b>Health:</b> <span id="petCurrentHp">4.9</span><span>/</span><span id="petHp">5</span>
+                <b>Damage:</b> <span id="petDmg">4.0</span>
+            </div>
+
+            <div class="actionspets">
+                <button class="acpet"><b>Attack</b></button>
+                <button class="acpet"><b>Power</b></button>
+            </div>
+        </div>
 
 <script>
     const API_URL = "https://sandpaper-purposely-droplet.ngrok-free.dev";
@@ -84,6 +122,7 @@
     };
 
     let sessionId = localStorage.getItem("game_session_id");
+    let lvlCount = 0;
 
     if (!sessionId) {
       sessionId = "player_" + Math.random().toString(36).substring(2, 9);
@@ -143,6 +182,8 @@
         document.getElementById("round").textContent = data.round;
         document.getElementById("turn").textContent = data.turn;
 
+        const cards = document.getElementById("cards");
+
         const petMenu = document.querySelector(".petmenu");
         const actionMenu = document.querySelector(".actionmenu");
 
@@ -160,6 +201,9 @@
         else {
             petMenu.style.display = "none";
             actionMenu.style.width = "100vw";
+            }
+        if (data.round % 3 == 0)  {
+            cards.style.display = "block";
             }
         renderEnemies(data.enemies);
         return data;
@@ -212,7 +256,7 @@
         finally {
             turn = false
         }
-    }
+    }    
 
     async function initGame() {
         const data = await updateStatus();
