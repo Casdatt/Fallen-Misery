@@ -64,17 +64,17 @@
             
             <div class="card">
             <h1 class="cardsttl">Title 1</h1>
-            <button class="cardsopt">1</button>
+            <button class="cardsopt" id="option1">1</button>
             </div>
 
             <div class="card">
             <h1 class="cardsttl">Title 2</h1>
-            <button class="cardsopt">2</button>
+            <button class="cardsopt" id="option2">2</button>
             </div>
 
             <div class="card">
             <h1 class="cardsttl">Title 3</h1>
-            <button class="cardsopt">3</button>
+            <button class="cardsopt" id="option3">3</button>
             </div>
 
         </div>
@@ -122,7 +122,6 @@
     };
 
     let sessionId = localStorage.getItem("game_session_id");
-    let lvlCount = 0;
 
     if (!sessionId) {
       sessionId = "player_" + Math.random().toString(36).substring(2, 9);
@@ -202,7 +201,7 @@
             petMenu.style.display = "none";
             actionMenu.style.width = "100vw";
             }
-        if (data.round % 3 == 0)  {
+        if (data.round % 3 == 0 && data.round != 0)  {
             cards.style.display = "block";
             }
         renderEnemies(data.enemies);
@@ -256,6 +255,31 @@
         finally {
             turn = false
         }
+    }
+
+    async function playerPower() {
+        document.getElementById("log").textContent = "Nah, I dont feel like using it right now 😖";
+    }
+
+    async function upradeSelect(option) {
+        try {
+            const res = await fetch(`${API_URL}/action?cmd=upradeSelect&option=${option}&sessionId=${sessionId}`, { headers: ngrokHeaders });
+            const actionData = await res.json();
+        
+            await displayLogSequentially(actionData.message);
+
+            const statusData = await updateStatus();
+
+            if (statusData && statusData.enemiesLeft === 0) {
+                await advanceRound();
+            }
+        } 
+        catch (err) {
+            document.getElementById("log").textContent = "Error selecting uprade.";
+        }
+        finally {
+            turn = false
+        }
     }    
 
     async function initGame() {
@@ -266,6 +290,11 @@
     }
 
     document.getElementById("attack").addEventListener("click", playerAttack);
+    document.getElementById("power").addEventListener("click", playerPower);
+
+    document.getElementById("option1").addEventListener("click", () => upradeSelect(1));
+    document.getElementById("option2").addEventListener("click", () => upradeSelect(2));
+    document.getElementById("option3").addEventListener("click", () => upradeSelect(3));
     initGame();
 
 </script>
